@@ -14,6 +14,7 @@ export interface IGEmbedProps extends BlockQuoteProps {
   igVersion?: string;
   linkText?: string;
   processDelay?: number;
+  scriptImportDisabled?: boolean;
 }
 
 export const IGEmbed = ({
@@ -22,6 +23,7 @@ export const IGEmbed = ({
   igVersion = defaultIgVersion,
   linkText = defaultLinkText,
   processDelay = 100,
+  scriptImportDisabled = false,
   ...blockQuoteProps
 }: IGEmbedProps): JSX.Element => {
   const [processTime, setProcessTime] = React.useState(-1);
@@ -53,7 +55,7 @@ export const IGEmbed = ({
 
   return (
     <>
-      {!embedScriptLoaded && (embedScriptLoaded = true) && (
+      {!scriptImportDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
         <Helmet>
           <script src="//www.instagram.com/embed.js"></script>
         </Helmet>
