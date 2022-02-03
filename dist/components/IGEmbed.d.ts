@@ -6,5 +6,6 @@ export interface IGEmbedProps extends BlockQuoteProps {
     igVersion?: string;
     linkText?: string;
     processDelay?: number;
+    scriptImportDisabled?: boolean;
 }
-export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, ...blockQuoteProps }: IGEmbedProps) => JSX.Element;
+export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, scriptImportDisabled, ...blockQuoteProps }: IGEmbedProps) => JSX.Element;

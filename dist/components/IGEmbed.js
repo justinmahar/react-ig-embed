@@ -29,7 +29,7 @@ const react_helmet_1 = require("react-helmet");
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = 100, ...blockQuoteProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = 100, scriptImportDisabled = false, ...blockQuoteProps }) => {
     const [processTime, setProcessTime] = React.useState(-1);
     React.useEffect(() => {
         const win = typeof window !== 'undefined' ? window : undefined;
@@ -55,7 +55,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
     return (React.createElement(React.Fragment, null,
-        !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null,
+        !scriptImportDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null,
             React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
         React.createElement("blockquote", { className: (0, classnames_1.default)('instagram-media', blockQuoteProps.className), "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...blockQuoteProps, style: {
                 background: '#FFF',
