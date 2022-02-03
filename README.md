@@ -60,10 +60,6 @@ The following props are supported:
 
 Type definitions have been included for [TypeScript](https://www.typescriptlang.org/) support.
 
-## Logo Attribution
-
-Logo graphics by [Twemoji](https://github.com/twitter/twemoji), licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/). Favicon by [favicon.io](https://favicon.io/emoji-favicons/).
-
 ## Contributing
 
 Open source software is awesome and so are you. 😎
