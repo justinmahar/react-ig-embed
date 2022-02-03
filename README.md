@@ -59,7 +59,16 @@ In addition, the following props are supported:
 | `linkText`      | `string` or `undefined` | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`         |
 | `processDelay`  | `number` or `undefined` | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`. |
 
-Feel free to use props such as `className` and `style` to customize the component's appearance. You can also target this component with CSS using the `instagram-media` class name.
+## Styling
+
+Feel free to use props such as `className` and `style` to customize the component's appearance. 
+
+You can also target this component with CSS using the `instagram-media` class name.
+
+For additional control, the component has three main divs with the following class names:
+- Header - Class name `instagram-media-header`
+- Body - Class name `instagram-media-body`
+- Footer - Class name `instagram-media-footer`
 
 ## How It Works
 
