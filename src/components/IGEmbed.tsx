@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { BlockQuoteProps } from 'react-html-props';
 
 const defaultIgVersion = '14';
-const defaultViewPostText = 'View this post on Instagram';
+const defaultLinkText = 'View this post on Instagram';
 
 let embedScriptLoaded = false;
 
@@ -12,16 +12,10 @@ export interface IGEmbedProps extends BlockQuoteProps {
   url: string;
   backgroundUrl?: string;
   igVersion?: string;
-  viewPostText?: string;
+  linkText?: string;
 }
 
-export const IGEmbed = ({
-  url,
-  backgroundUrl,
-  igVersion,
-  viewPostText,
-  ...blockQuoteProps
-}: IGEmbedProps): JSX.Element => {
+export const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuoteProps }: IGEmbedProps): JSX.Element => {
   React.useEffect(() => {
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
     if (win) {
@@ -33,7 +27,7 @@ export const IGEmbed = ({
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
   const igVersionToUse = typeof igVersion !== 'undefined' ? igVersion : defaultIgVersion;
-  const viewPostTextToUse = typeof viewPostText !== 'undefined' ? viewPostText : defaultViewPostText;
+  const linkTextToUse = typeof linkText !== 'undefined' ? linkText : defaultLinkText;
 
   return (
     <>
@@ -75,7 +69,7 @@ export const IGEmbed = ({
             rel="noreferrer"
           >
             <IGHeader />
-            <IGBody url={cleanUrlWithEndingSlash} backgroundUrl={backgroundUrl} viewPostText={viewPostTextToUse} />
+            <IGBody url={cleanUrlWithEndingSlash} backgroundUrl={backgroundUrl} linkText={linkTextToUse} />
             <IGFooter />
           </a>
         </div>
@@ -122,7 +116,7 @@ const IGHeader = () => {
   );
 };
 
-const IGBody = (props: { url: string; backgroundUrl?: string; viewPostText?: string }) => {
+const IGBody = (props: { url: string; backgroundUrl?: string; linkText?: string }) => {
   return (
     <div
       style={{
@@ -158,7 +152,7 @@ const IGBody = (props: { url: string; backgroundUrl?: string; viewPostText?: str
             </g>
           </svg>
         </div>
-        {!!props.viewPostText && (
+        {!!props.linkText && (
           <>
             <div style={{ paddingTop: '8px' }}>
               <div
@@ -171,7 +165,7 @@ const IGBody = (props: { url: string; backgroundUrl?: string; viewPostText?: str
                   lineHeight: '18px',
                 }}
               >
-                {props.viewPostText}
+                {props.linkText}
               </div>
             </div>
           </>

@@ -47,14 +47,24 @@ import { IGEmbed } from "react-ig-embed";
 
 ## Props
 
-The following props are supported:
+All props for the React `blockquote` element are supported.
 
-| Prop Name       | Type                    | Description                                                                                    |
-| --------------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
-| `url`           | `string`                | **Required.** The Instagram URL for the post to embed.                                         |
-| `backgroundUrl` | `string` or `undefined` | *Optional.* A URL to an image to show (blurred) while the post loads.                          |
-| `igVersion`     | `string` or `undefined` | *Optional.* The API version to use. Defaults to `"14"`.                                        |
-| `viewPostText`  | `string` or `undefined` | *Optional.* The text to show while the post loads. Defaults to `"View this post on Instagram"` |
+In addition, the following props are supported:
+
+| Prop Name       | Type                    | Description                                                                                         |
+| --------------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `url`           | `string`                | **Required.** The Instagram URL for the post to embed.                                              |
+| `backgroundUrl` | `string` or `undefined` | *Optional.* A URL to an image to show (blurred) while the post loads.                               |
+| `igVersion`     | `string` or `undefined` | *Optional.* The API version to use. Defaults to `"14"`.                                             |
+| `linkText`      | `string` or `undefined` | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"` |
+
+## How It Works
+
+This component relies on the Instagram embed script, which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
+
+The `IGEmbed` component uses embed HTML provided by Instagram. This creates a `blockquote` element with the class name `instagram-media`. 
+
+Instagram's embed script will scan the DOM for elements with this class name and perform the embed for you. Be mindful that the embed happens in the DOM outside of the React ecosystem.
 
 ## TypeScript
 
