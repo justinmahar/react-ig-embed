@@ -20,7 +20,7 @@ You just want to embed a public post in React.
 
 You may have tried creating a Facebook/Meta App, then requested `Oembed Read` permissions in order to programmatically retrieve the embed HTML for public posts. This HTML contains the `blockquote` and `script` tag you need to embed the post.
 
-You then likely realized that this is a huge hassle, and requires you to jump through several hoops setting up and app and getting verified. And even then (like me) you may still receive errors when trying to use the API to get the embed HTML.
+You then likely realized that this is a huge hassle, and requires you to jump through several hoops setting up an app and getting verified. And even then (like me) you may still receive errors when trying to use the API to get the embed HTML.
 
 ### The Solution
 
