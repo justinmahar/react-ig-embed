@@ -28,7 +28,8 @@
     "embed",
     "ig",
     "post",
-    "social"
+    "social",
+    "react instagram embed"
   ],
   "peerDependencies": {
     "react": "^17",
