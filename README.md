@@ -65,7 +65,7 @@ This component relies on the Instagram embed script, which is loaded once to `wi
 
 The `IGEmbed` component uses embed HTML provided by Instagram. This creates a `blockquote` element with the class name `instagram-media`.
 
-Once the component renders, and effect is called to process the embed. 
+Once the component renders, an effect is called to process the embed. 
 
 The function `window.instgrm.Embeds.process()` is called (only if it exists), which is Instagram's embed processor. This will scan the DOM for elements with this class name and perform the embed for you.
 
