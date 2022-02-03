@@ -29,22 +29,35 @@ const react_helmet_1 = require("react-helmet");
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuoteProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = 100, ...blockQuoteProps }) => {
+    const [processTime, setProcessTime] = React.useState(-1);
     React.useEffect(() => {
         const win = typeof window !== 'undefined' ? window : undefined;
-        if (win) {
+        if (win && processTime >= 0) {
             // This call will use the IG embed script to process all elements with the `instagram-media` class name.
-            win.instgrm?.Embeds?.process();
+            if (win.instgrm?.Embeds) {
+                win.instgrm.Embeds.process();
+            }
+            else {
+                console.error('Instagram embed script not found. Unable to process Instagram embed:', url);
+            }
         }
-    }, []);
+    }, [processTime, url]);
+    React.useEffect(() => {
+        const timeout = undefined;
+        if (typeof processDelay !== 'undefined' && processDelay > 0) {
+            setTimeout(() => {
+                setProcessTime(Date.now());
+            }, processDelay);
+        }
+        return () => clearTimeout(timeout);
+    }, [processDelay]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
-    const igVersionToUse = typeof igVersion !== 'undefined' ? igVersion : defaultIgVersion;
-    const linkTextToUse = typeof linkText !== 'undefined' ? linkText : defaultLinkText;
     return (React.createElement(React.Fragment, null,
         !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null,
             React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
-        React.createElement("blockquote", { className: (0, classnames_1.default)('instagram-media', blockQuoteProps.className), "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersionToUse, ...blockQuoteProps, style: {
+        React.createElement("blockquote", { className: (0, classnames_1.default)('instagram-media', blockQuoteProps.className), "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...blockQuoteProps, style: {
                 background: '#FFF',
                 borderRadius: '3px',
                 border: '1px solid #dee2e6',
@@ -66,7 +79,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuoteProps }
                         width: '100%',
                     }, target: "_blank", rel: "noreferrer" },
                     React.createElement(IGHeader, null),
-                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkTextToUse }),
+                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText }),
                     React.createElement(IGFooter, null))))));
 };
 exports.IGEmbed = IGEmbed;

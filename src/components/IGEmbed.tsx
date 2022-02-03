@@ -13,21 +13,43 @@ export interface IGEmbedProps extends BlockQuoteProps {
   backgroundUrl?: string;
   igVersion?: string;
   linkText?: string;
+  processDelay?: number;
 }
 
-export const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuoteProps }: IGEmbedProps): JSX.Element => {
+export const IGEmbed = ({
+  url,
+  backgroundUrl,
+  igVersion = defaultIgVersion,
+  linkText = defaultLinkText,
+  processDelay = 100,
+  ...blockQuoteProps
+}: IGEmbedProps): JSX.Element => {
+  const [processTime, setProcessTime] = React.useState(-1);
   React.useEffect(() => {
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
-    if (win) {
+    if (win && processTime >= 0) {
       // This call will use the IG embed script to process all elements with the `instagram-media` class name.
-      win.instgrm?.Embeds?.process();
+      if (win.instgrm?.Embeds) {
+        win.instgrm.Embeds.process();
+      } else {
+        console.error('Instagram embed script not found. Unable to process Instagram embed:', url);
+      }
     }
-  }, []);
+  }, [processTime, url]);
+
+  React.useEffect(() => {
+    const timeout: any = undefined;
+    if (typeof processDelay !== 'undefined' && processDelay > 0) {
+      setTimeout(() => {
+        setProcessTime(Date.now());
+      }, processDelay);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [processDelay]);
 
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
-  const igVersionToUse = typeof igVersion !== 'undefined' ? igVersion : defaultIgVersion;
-  const linkTextToUse = typeof linkText !== 'undefined' ? linkText : defaultLinkText;
 
   return (
     <>
@@ -39,7 +61,7 @@ export const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuote
       <blockquote
         className={classNames('instagram-media', blockQuoteProps.className)}
         data-instgrm-permalink={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
-        data-instgrm-version={igVersionToUse}
+        data-instgrm-version={igVersion}
         {...blockQuoteProps}
         style={{
           background: '#FFF',
@@ -69,7 +91,7 @@ export const IGEmbed = ({ url, backgroundUrl, igVersion, linkText, ...blockQuote
             rel="noreferrer"
           >
             <IGHeader />
-            <IGBody url={cleanUrlWithEndingSlash} backgroundUrl={backgroundUrl} linkText={linkTextToUse} />
+            <IGBody url={cleanUrlWithEndingSlash} backgroundUrl={backgroundUrl} linkText={linkText} />
             <IGFooter />
           </a>
         </div>
