@@ -65,10 +65,12 @@ Feel free to use props such as `className` and `style` to customize the componen
 
 You can also target this component with CSS using the `instagram-media` class name.
 
-For additional control, the component has three main divs with the following class names:
+For additional control, the component shown while a post is loading has three main divs with the following class names:
 - Header - Class name `instagram-media-header`
 - Body - Class name `instagram-media-body`
 - Footer - Class name `instagram-media-footer`
+
+These components are all replaced once the embed completes.
 
 ## How It Works
 
