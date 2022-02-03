@@ -8,12 +8,6 @@
   <a href="https://badge.fury.io/js/react-ig-embed">
     <img src="https://badge.fury.io/js/react-ig-embed.svg" alt="npm Version"/>
   </a>
-  <a href="https://github.com/justinmahar/react-ig-embed/actions?query=workflow%3ATests">
-    <img src="https://github.com/justinmahar/react-ig-embed/workflows/Tests/badge.svg" alt="Tests Status"/>
-  </a>
-  <a href="https://github.com/justinmahar/react-ig-embed/actions?query=workflow%3ADeploy">
-    <img src="https://github.com/justinmahar/react-ig-embed/workflows/Deploy/badge.svg" alt="Deploy Status"/>
-  </a>
 </p>
 
 ## Overview
