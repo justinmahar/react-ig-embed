@@ -77,9 +77,9 @@ These components are all replaced once the embed completes.
 
 This component relies on the [Instagram embed script](https://www.instagram.com/embed.js), which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
 
-The `IGEmbed` component uses the HTML provided by Instagram when selecting the "Embed" option on any public post. This HTML contains a `blockquote` element with the class name `instagram-media`.
+The `IGEmbed` component uses the HTML provided by Instagram when selecting the "Embed" option on any public post. This HTML contains a `blockquote` element with the class name `instagram-media`, placeholders for the content, and a link to view the post on Instagram.
 
-Once the component renders, an effect is called to process the embed. 
+Once the component renders, an effect is called to process the embed.
 
 The function `window.instgrm.Embeds.process()` is called (only if it exists), which is Instagram's embed processor. This will scan the DOM for elements with the `instagram-media` class name and perform the embed for you.
 
