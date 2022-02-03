@@ -63,7 +63,7 @@ In addition, the following props are supported:
 
 This component relies on the Instagram embed script, which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
 
-The `IGEmbed` component uses embed HTML provided by Instagram. This creates a `blockquote` element with the class name `instagram-media`.
+The `IGEmbed` component uses the embed HTML provided by Instagram when selecting "Embed" on any public posts. This HTML uses a `blockquote` element with the class name `instagram-media`.
 
 Once the component renders, an effect is called to process the embed. 
 
