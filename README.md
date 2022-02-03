@@ -2,7 +2,7 @@
   <a href="https://github.com/justinmahar/react-ig-embed">React IG Embed</a>
 </h2>
 <h3 align="center">
-  Easily embed public Instagram posts in React.
+  Easily embed public Instagram posts in React. No access token required.
 </h3>
 <p align="center">
   <a href="https://badge.fury.io/js/react-ig-embed">
