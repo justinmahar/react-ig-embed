@@ -1,6 +1,6 @@
 {
   "name": "react-ig-embed",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Justin Mahar <contact@justinmahar.com>",
   "description": "Easily embed public Instagram posts in React. No access token required.",
   "homepage": "https://justinmahar.github.io/react-ig-embed/",
