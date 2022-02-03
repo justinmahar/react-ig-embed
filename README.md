@@ -56,9 +56,15 @@ import { IGEmbed } from "react-ig-embed";
 <IGEmbed url="https://www.instagram.com/p/CUbHfhpswxt/" />
 ```
 
-### Example Results
+### Results
 
-![Example Embed](./screenshots/example-embed.png)
+#### Embed Loading
+
+![Example Embed Loading](./screenshots/example-loading.png)
+
+#### Embed Complete
+
+![Example Embed Complete](./screenshots/example-embed.png)
 
 ## Props
 
