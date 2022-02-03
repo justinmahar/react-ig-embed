@@ -79,7 +79,7 @@ In addition, the following props are supported:
 | `igVersion`              | `string` or `undefined`  | *Optional.* The API version to use. Defaults to `"14"`.                                                                                                     |
 | `linkText`               | `string` or `undefined`  | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`                                                         |
 | `processDelay`           | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
-| `scriptImportDisabled`   | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
+| `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
 | `softFilterDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable the soft white filter over the background image (if provided) shown while the post loads. Default `false`.             |

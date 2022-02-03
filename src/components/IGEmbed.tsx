@@ -14,7 +14,7 @@ export interface IGEmbedProps extends BlockQuoteProps {
   igVersion?: string;
   linkText?: string;
   processDelay?: number;
-  scriptImportDisabled?: boolean;
+  scriptLoadDisabled?: boolean;
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
   softFilterDisabled?: boolean;
@@ -26,7 +26,7 @@ export const IGEmbed = ({
   igVersion = defaultIgVersion,
   linkText = defaultLinkText,
   processDelay = 100,
-  scriptImportDisabled = false,
+  scriptLoadDisabled = false,
   linkTextDisabled = false,
   backgroundBlurDisabled = false,
   softFilterDisabled = false,
@@ -61,7 +61,7 @@ export const IGEmbed = ({
 
   return (
     <>
-      {!scriptImportDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
+      {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
         <Helmet>{<script src="//www.instagram.com/embed.js"></script>}</Helmet>
       )}
       <blockquote
