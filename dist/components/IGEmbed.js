@@ -112,8 +112,9 @@ const IGHeader = () => {
 const IGBody = (props) => {
     return (React.createElement("div", { className: "instagram-media-body", style: {
             backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
+            backgroundRepeat: props.backgroundUrl ? 'no-repeat' : undefined,
+            backgroundPosition: props.backgroundUrl ? 'center' : undefined,
+            backgroundSize: props.backgroundUrl ? 'cover' : undefined,
             marginTop: props.backgroundUrl ? '16px' : undefined,
             marginBottom: props.backgroundUrl ? '16px' : undefined,
         } },
