@@ -14,20 +14,19 @@
 
 Easily embed public Instagram posts with the `IGEmbed` component. No access token is required.
 
-
 ### The Problem 
 
-You just want to embed a public post in React. You may have tried creating a Facebook/Meta App, then requested `Oembed Read` permissions in order to programmatically retrieve the embed HTML for public posts. 
+You just want to embed a public post in React. 
 
-You then likely realized that this is a huge hassle, and requires you to jump through several hoops. And even then (like me) you may still receive errors when trying to use the API to get the embed HTML.
+You may have tried creating a Facebook/Meta App, then requested `Oembed Read` permissions in order to programmatically retrieve the embed HTML for public posts. This HTML contains the `blockquote` and `script` tag you need to embed the post.
+
+You then likely realized that this is a huge hassle, and requires you to jump through several hoops setting up and app and getting verified. And even then (like me) you may still receive errors when trying to use the API to get the embed HTML.
 
 ### The Solution
 
-The HTML you would have received from the API call contains a script tag for Instagram's embed JS.
+This component skips the API call for HTML by rendering our own embed-compatible HTML as a React component, and calling the Instagram embed script's embed processor directly in an effect after the render completes.
 
-This component skips the API call by rendering embed-compatible HTML as a React component, and calling the Instagram embed script's embed processor directly in an effect.
-
-This is equivalent to selecting "Embed" on any public post and using the HTML provided to the user. The result: Easy embedding of public posts! 🎉
+The result: Easy embedding of public posts! 🎉
 
 ### Features include:
 
@@ -101,7 +100,7 @@ These components are all replaced once the embed completes.
 
 This component relies on the [Instagram embed script](https://www.instagram.com/embed.js), which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
 
-The `IGEmbed` component uses the HTML provided by Instagram when selecting the "Embed" option on any public post. This HTML contains a `blockquote` element with the class name `instagram-media`, placeholders for the content, and a link to view the post on Instagram.
+The `IGEmbed` component adapts the HTML provided by Instagram when selecting the "Embed" option on any public post. This HTML contains a `blockquote` element with the class name `instagram-media`, placeholders for the content, and a link to view the post on Instagram.
 
 Once the component renders, an effect is called to process the embed.
 
