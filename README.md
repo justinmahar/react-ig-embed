@@ -14,14 +14,29 @@
 
 Easily embed public Instagram posts with the `IGEmbed` component. No access token is required.
 
+
+### The Problem 
+
+You just want to embed a public post in React. You may have tried creating a Facebook/Meta App, then requested `Oembed Read` permissions in order to programmatically retrieve the embed HTML for public posts. 
+
+You then likely realized that this is a huge hassle, and requires you to jump through several hoops. And even then (like me) you may still receive errors when trying to use the API to get the embed HTML.
+
+### The Solution
+
+The HTML you would have received from the API call contains a script tag for Instagram's embed JS.
+
+This component skips the API call by rendering embed-compatible HTML as a React component, and calling the Instagram embed script's embed processor directly in an effect.
+
+This is equivalent to selecting "Embed" on any public post and using the HTML provided to the user. The result: Easy embedding of public posts! 🎉
+
 ### Features include:
 
 - **📷 Simple and easy Instagram post embedding.**
-  - No access token needed. Just provide a URL, that's it!
-- **🖼️ Fallback background image**
-  - Provide a background image URL to show while content loads.
-- **#️⃣ Selectable API version**
-  - Provide the desired Instagram API version.
+  - Just provide a URL, that's it!
+- **🔓 No access token needed!**
+  - Uses Instagram's [embed script](https://developers.facebook.com/docs/instagram/oembed/), which doesn't require an API token.
+- **💁 Customizable**
+  - Supports all `blockquote` props and provides additional options.
 
 ## Installation
 
@@ -84,6 +99,8 @@ Once the component renders, an effect is called to process the embed.
 The function `window.instgrm.Embeds.process()` is called (only if it exists), which is Instagram's embed processor. This will scan the DOM for elements with the `instagram-media` class name and perform the embed for you.
 
 Be mindful that the embed happens in the DOM outside of the React ecosystem, so React has no idea the contents have changed.
+
+Official documentation for the embed script [can be found here](https://developers.facebook.com/docs/instagram/oembed/), in the section titled "Embed JS".
 
 ## TypeScript
 
