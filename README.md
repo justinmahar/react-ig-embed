@@ -69,7 +69,7 @@ Once the component renders, an effect is called to process the embed.
 
 The function `window.instgrm.Embeds.process()` is called (only if it exists), which is Instagram's embed processor. This will scan the DOM for elements with this class name and perform the embed for you.
 
-Be mindful that the embed happens in the DOM outside of the React ecosystem.
+Be mindful that the embed happens in the DOM outside of the React ecosystem, so React has no idea the contents have changed.
 
 ## TypeScript
 
