@@ -21,7 +21,7 @@ Easily embed public Instagram posts with the `IGEmbed` component. No access toke
 - **🖼️ Fallback background image**
   - Provide a background image URL to show while content loads.
 - **#️⃣ Selectable API version**
-  - Defaults to API version 14.
+  - Provide the desired Instagram API version.
 
 ## Installation
 
@@ -49,12 +49,12 @@ import { IGEmbed } from "react-ig-embed";
 
 The following props are supported:
 
-| Prop Name       | Type                 | Description                                                                                  |
-| --------------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| `url`           | `string`             | Required. The Instagram URL for the post to embed.                                           |
-| `backgroundUrl` | `string | undefined` | Optional. A URL to an image to show (blurred) while the post loads.                          |
-| `igVersion`     | `string | undefined` | Optional. The API version to use. Defaults to `"14"`.                                        |
-| `viewPostText`  | `string | undefined` | Optional. The text to show while the post loads. Defaults to `"View this post on Instagram"` |
+| Prop Name       | Type                    | Description                                                                                  |
+| --------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
+| `url`           | `string`                | Required. The Instagram URL for the post to embed.                                           |
+| `backgroundUrl` | `string` or `undefined` | Optional. A URL to an image to show (blurred) while the post loads.                          |
+| `igVersion`     | `string` or `undefined` | Optional. The API version to use. Defaults to `"14"`.                                        |
+| `viewPostText`  | `string` or `undefined` | Optional. The text to show while the post loads. Defaults to `"View this post on Instagram"` |
 
 ## TypeScript
 
