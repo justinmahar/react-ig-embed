@@ -102,7 +102,7 @@ export const IGEmbed = ({
 
 const IGHeader = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <div className="instagram-media-header" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <div
         style={{
           backgroundColor: '#F4F4F4',
@@ -141,6 +141,7 @@ const IGHeader = () => {
 const IGBody = (props: { url: string; backgroundUrl?: string; linkText?: string }) => {
   return (
     <div
+      className="instagram-media-body"
       style={{
         backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
         backgroundRepeat: 'no-repeat',
@@ -200,7 +201,7 @@ const IGBody = (props: { url: string; backgroundUrl?: string; linkText?: string 
 
 const IGFooter = () => {
   return (
-    <>
+    <div className="instagram-media-footer">
       <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '14px', alignItems: 'center' }}>
         <div>
           <div
@@ -304,6 +305,6 @@ const IGFooter = () => {
         />
         <div style={{ backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '14px', width: '144px' }} />
       </div>
-    </>
+    </div>
   );
 };

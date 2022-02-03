@@ -59,6 +59,8 @@ In addition, the following props are supported:
 | `linkText`      | `string` or `undefined` | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`         |
 | `processDelay`  | `number` or `undefined` | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`. |
 
+Feel free to use props such as `className` and `style` to customize the component's appearance. You can also target this component with CSS using the `instagram-media` class name.
+
 ## How It Works
 
 This component relies on the [Instagram embed script](https://www.instagram.com/embed.js), which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
