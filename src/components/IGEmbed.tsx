@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { BlockQuoteProps } from 'react-html-props';
+import { BlockQuoteProps, DivProps } from 'react-html-props';
 
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
+const defaultProcessDelay = 100;
+const defaultRetryDelay = 500;
 
 let embedScriptLoaded = false;
 
-export interface IGEmbedProps extends BlockQuoteProps {
+export interface IGEmbedProps extends DivProps {
   url: string;
   backgroundUrl?: string;
   igVersion?: string;
@@ -18,6 +20,7 @@ export interface IGEmbedProps extends BlockQuoteProps {
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
   softFilterDisabled?: boolean;
+  retryDisabled?: boolean;
 }
 
 export const IGEmbed = ({
@@ -25,14 +28,18 @@ export const IGEmbed = ({
   backgroundUrl,
   igVersion = defaultIgVersion,
   linkText = defaultLinkText,
-  processDelay = 100,
+  processDelay = defaultProcessDelay,
   scriptLoadDisabled = false,
   linkTextDisabled = false,
   backgroundBlurDisabled = false,
   softFilterDisabled = false,
-  ...blockQuoteProps
+  retryDisabled = false,
+  ...divProps
 }: IGEmbedProps): JSX.Element => {
+  const [initialized, setInitialized] = React.useState(false);
   const [processTime, setProcessTime] = React.useState(-1);
+  const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
+  const preEmbedElementId = React.useRef(generateUUID());
   React.useEffect(() => {
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
     if (win && processTime >= 0) {
@@ -45,30 +52,55 @@ export const IGEmbed = ({
     }
   }, [processTime, url]);
 
+  // Initialization
   React.useEffect(() => {
     const timeout: any = undefined;
-    if (typeof processDelay !== 'undefined' && processDelay > 0) {
-      setTimeout(() => {
+    if (!initialized) {
+      if (typeof processDelay !== 'undefined' && processDelay > 0) {
+        setTimeout(() => {
+          setProcessTime(Date.now());
+          setInitialized(true);
+        }, processDelay);
+      } else if (processDelay === 0) {
         setProcessTime(Date.now());
-      }, processDelay);
+        setInitialized(true);
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [initialized, processDelay]);
+
+  // Exponential backoff retry
+  React.useEffect(() => {
+    let timeout: any = undefined;
+    if (!retryDisabled && typeof document !== 'undefined') {
+      timeout = setTimeout(() => {
+        const preEmbedElement = document.getElementById(preEmbedElementId.current);
+        if (!!preEmbedElement) {
+          setProcessTime(Date.now());
+          setRetryDelay(retryDelay * 2);
+        }
+      }, retryDelay);
     }
 
     return () => clearTimeout(timeout);
-  }, [processDelay]);
+  }, [retryDelay, retryDisabled]);
 
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
 
   return (
-    <>
+    <div
+      className={classNames('instagram-media-container', divProps.className)}
+      style={{ overflow: 'clip', ...divProps.style }}
+    >
       {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
         <Helmet>{<script src="//www.instagram.com/embed.js"></script>}</Helmet>
       )}
       <blockquote
-        className={classNames('instagram-media', blockQuoteProps.className)}
+        className="instagram-media"
         data-instgrm-permalink={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
         data-instgrm-version={igVersion}
-        {...blockQuoteProps}
+        {...divProps}
         style={{
           background: '#FFF',
           borderRadius: '3px',
@@ -79,10 +111,10 @@ export const IGEmbed = ({
           minWidth: '326px',
           padding: 0,
           width: 'calc(100% - 2px)',
-          ...blockQuoteProps.style,
+          ...divProps.style,
         }}
       >
-        <div style={{ padding: '16px' }}>
+        <div className="instagram-media-pre-embed" id={preEmbedElementId.current} style={{ padding: '16px' }}>
           <a
             href={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
             style={{
@@ -109,7 +141,7 @@ export const IGEmbed = ({
           </a>
         </div>
       </blockquote>
-    </>
+    </div>
   );
 };
 
@@ -176,6 +208,7 @@ const IGBody = (props: IGBodyProps) => {
         style={{
           backgroundColor: props.softFilterDisabled ? undefined : 'rgba(255,255,255,0.7)',
           backdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
+          WebkitBackdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
         }}
       >
         <div style={{ padding: '16% 0' }} />
@@ -329,4 +362,24 @@ const IGFooter = () => {
       </div>
     </div>
   );
+};
+
+// https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
+const generateUUID = () => {
+  // Public Domain/MIT
+  let d = new Date().getTime(); //Timestamp
+  let d2 = (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    let r = Math.random() * 16; //random number between 0 and 16
+    if (d > 0) {
+      //Use timestamp until depleted
+      r = (d + r) % 16 | 0;
+      d = Math.floor(d / 16);
+    } else {
+      //Use microseconds since page-load if supported
+      r = (d2 + r) % 16 | 0;
+      d2 = Math.floor(d2 / 16);
+    }
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
 };

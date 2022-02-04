@@ -34,8 +34,10 @@ The result: Easy embedding of public posts! 🎉
   - Just provide a URL, that's it!
 - **🔓 No access token needed!**
   - Uses Instagram's [embed script](https://developers.facebook.com/docs/instagram/oembed/), which doesn't require an API token.
+- **💪 Resilient**
+  - If embedding fails, automatically retries using an exponential backoff.
 - **💁 Customizable**
-  - Supports all `blockquote` props and provides additional options.
+  - Supports all `div` props and provides additional options.
 
 ## Installation
 
@@ -67,7 +69,7 @@ import { IGEmbed } from "react-ig-embed";
 
 ## Props
 
-All props for the React `blockquote` element are supported.
+All props for the React `div` element are supported.
 
 In addition, the following props are supported:
 
@@ -78,6 +80,7 @@ In addition, the following props are supported:
 | `igVersion`              | `string` or `undefined`  | *Optional.* The API version to use. Defaults to `"14"`.                                                                                                     |
 | `linkText`               | `string` or `undefined`  | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`                                                         |
 | `processDelay`           | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
+| `retryDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable exponential backoff retry timer. Default `100`.                                                                        |
 | `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
@@ -85,16 +88,15 @@ In addition, the following props are supported:
 
 ## Styling
 
-Feel free to use props such as `className` and `style` to customize the component's appearance. 
+Feel free to use props such as `className` and `style` to customize the component's appearance.
 
-You can also target this component with CSS using the `instagram-media` class name.
+You can also target this component with CSS using the `instagram-media-container` class name.
 
-For additional control, the component shown while a post is loading has three main divs with the following class names:
-- Header - Class name `instagram-media-header`
-- Body - Class name `instagram-media-body`
-- Footer - Class name `instagram-media-footer`
+The contents of this component are modified from a `blockquote` to an `iframe` once the embed completes.
 
-These components are all replaced once the embed completes.
+Note that Instagram restricts the dimensions of the embedded `iframe` to to a min width of `326px` and a max width is `540px`.
+
+By default, the style `{ overflow: 'clip' }` is applied.
 
 ## How It Works
 
