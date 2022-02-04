@@ -35,7 +35,7 @@ The result: Easy embedding of public posts! 🎉
 - **🔓 No access token needed!**
   - Uses Instagram's [embed script](https://developers.facebook.com/docs/instagram/oembed/), which doesn't require an API token.
 - **💪 Resilient**
-  - If embedding fails, automatically retries using an exponential backoff.
+  - If embedding fails, it automatically retries using an exponential backoff.
 - **💁 Customizable**
   - Supports all `div` props and provides additional options.
 
@@ -100,7 +100,7 @@ By default, the style `{ overflow: 'clip' }` is applied.
 
 ## Retry Timer
 
-This component includes a timer function that will check if the embed has succeeded. If not, it will re-attempt the embed.
+This component includes a timer function that will check if the embed has succeeded. If not, it will reattempt the embed.
 
 The timer uses an exponential backoff, doubling the delay each time.
 
