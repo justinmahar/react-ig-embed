@@ -80,7 +80,7 @@ In addition, the following props are supported:
 | `igVersion`              | `string` or `undefined`  | *Optional.* The API version to use. Defaults to `"14"`.                                                                                                     |
 | `linkText`               | `string` or `undefined`  | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`                                                         |
 | `processDelay`           | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
-| `retryDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable exponential backoff retry timer. Default `100`.                                                                        |
+| `retryDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable exponential backoff retry timer. Default `false`.                                                                      |
 | `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
@@ -97,6 +97,14 @@ The contents of this component are modified from a `blockquote` to an `iframe` o
 Note that Instagram restricts the dimensions of the embedded `iframe` to to a min width of `326px` and a max width is `540px`.
 
 By default, the style `{ overflow: 'clip' }` is applied.
+
+## Retry Timer
+
+This component includes a timer function that will check if the embed has succeeded. If not, it will re-attempt the embed.
+
+The timer uses an exponential backoff, doubling the delay each time.
+
+To determine if the embed has succeeded, the timer function check to see if a `div` inside the placeholder `blockquote` exists. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
 
 ## How It Works
 
