@@ -68,7 +68,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
     // Exponential backoff retry
     React.useEffect(() => {
         let timeout = undefined;
-        if (!retryDisabled && typeof document !== 'undefined') {
+        if (initialized && !retryDisabled && typeof document !== 'undefined') {
             timeout = setTimeout(() => {
                 const preEmbedElement = document.getElementById(preEmbedElementId.current);
                 if (!!preEmbedElement) {
@@ -78,7 +78,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
             }, retryDelay);
         }
         return () => clearTimeout(timeout);
-    }, [retryDelay, retryDisabled]);
+    }, [initialized, retryDelay, retryDisabled]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
     return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'clip', ...divProps.style } },

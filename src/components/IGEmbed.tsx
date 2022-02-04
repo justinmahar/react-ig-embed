@@ -72,7 +72,7 @@ export const IGEmbed = ({
   // Exponential backoff retry
   React.useEffect(() => {
     let timeout: any = undefined;
-    if (!retryDisabled && typeof document !== 'undefined') {
+    if (initialized && !retryDisabled && typeof document !== 'undefined') {
       timeout = setTimeout(() => {
         const preEmbedElement = document.getElementById(preEmbedElementId.current);
         if (!!preEmbedElement) {
@@ -83,7 +83,7 @@ export const IGEmbed = ({
     }
 
     return () => clearTimeout(timeout);
-  }, [retryDelay, retryDisabled]);
+  }, [initialized, retryDelay, retryDisabled]);
 
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
