@@ -28,9 +28,14 @@ const React = __importStar(require("react"));
 const react_helmet_1 = require("react-helmet");
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
+const defaultProcessDelay = 100;
+const defaultRetryDelay = 500;
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = 100, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, ...blockQuoteProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, retryDisabled = false, ...divProps }) => {
+    const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
+    const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
+    const preEmbedElementId = React.useRef(generateUUID());
     React.useEffect(() => {
         const win = typeof window !== 'undefined' ? window : undefined;
         if (win && processTime >= 0) {
@@ -43,20 +48,42 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
             }
         }
     }, [processTime, url]);
+    // Initialization
     React.useEffect(() => {
         const timeout = undefined;
-        if (typeof processDelay !== 'undefined' && processDelay > 0) {
-            setTimeout(() => {
+        if (!initialized) {
+            if (typeof processDelay !== 'undefined' && processDelay > 0) {
+                setTimeout(() => {
+                    setProcessTime(Date.now());
+                    setInitialized(true);
+                }, processDelay);
+            }
+            else if (processDelay === 0) {
                 setProcessTime(Date.now());
-            }, processDelay);
+                setInitialized(true);
+            }
         }
         return () => clearTimeout(timeout);
-    }, [processDelay]);
+    }, [initialized, processDelay]);
+    // Exponential backoff retry
+    React.useEffect(() => {
+        let timeout = undefined;
+        if (!retryDisabled && typeof document !== 'undefined') {
+            timeout = setTimeout(() => {
+                const preEmbedElement = document.getElementById(preEmbedElementId.current);
+                if (!!preEmbedElement) {
+                    setProcessTime(Date.now());
+                    setRetryDelay(retryDelay * 2);
+                }
+            }, retryDelay);
+        }
+        return () => clearTimeout(timeout);
+    }, [retryDelay, retryDisabled]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
-    return (React.createElement(React.Fragment, null,
+    return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'clip', ...divProps.style } },
         !scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null, React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
-        React.createElement("blockquote", { className: (0, classnames_1.default)('instagram-media', blockQuoteProps.className), "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...blockQuoteProps, style: {
+        React.createElement("blockquote", { className: "instagram-media", "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...divProps, style: {
                 background: '#FFF',
                 borderRadius: '3px',
                 border: '1px solid #dee2e6',
@@ -66,9 +93,9 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                 minWidth: '326px',
                 padding: 0,
                 width: 'calc(100% - 2px)',
-                ...blockQuoteProps.style,
+                ...divProps.style,
             } },
-            React.createElement("div", { style: { padding: '16px' } },
+            React.createElement("div", { className: "instagram-media-pre-embed", id: preEmbedElementId.current, style: { padding: '16px' } },
                 React.createElement("a", { href: `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, style: {
                         background: '#FFFFFF',
                         lineHeight: 0,
@@ -121,6 +148,7 @@ const IGBody = (props) => {
         React.createElement("div", { style: {
                 backgroundColor: props.softFilterDisabled ? undefined : 'rgba(255,255,255,0.7)',
                 backdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
+                WebkitBackdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
             } },
             React.createElement("div", { style: { padding: '16% 0' } }),
             React.createElement("div", { style: { display: 'block', height: '50px', margin: '0 auto 12px', width: '50px' } },
@@ -223,4 +251,24 @@ const IGFooter = () => {
                     width: '224px',
                 } }),
             React.createElement("div", { style: { backgroundColor: '#F4F4F4', borderRadius: '4px', flexGrow: 0, height: '14px', width: '144px' } }))));
+};
+// https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
+const generateUUID = () => {
+    // Public Domain/MIT
+    let d = new Date().getTime(); //Timestamp
+    let d2 = (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = Math.random() * 16; //random number between 0 and 16
+        if (d > 0) {
+            //Use timestamp until depleted
+            r = (d + r) % 16 | 0;
+            d = Math.floor(d / 16);
+        }
+        else {
+            //Use microseconds since page-load if supported
+            r = (d2 + r) % 16 | 0;
+            d2 = Math.floor(d2 / 16);
+        }
+        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
 };

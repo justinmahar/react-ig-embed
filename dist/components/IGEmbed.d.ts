@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { BlockQuoteProps } from 'react-html-props';
-export interface IGEmbedProps extends BlockQuoteProps {
+import { DivProps } from 'react-html-props';
+export interface IGEmbedProps extends DivProps {
     url: string;
     backgroundUrl?: string;
     igVersion?: string;
@@ -10,5 +10,6 @@ export interface IGEmbedProps extends BlockQuoteProps {
     linkTextDisabled?: boolean;
     backgroundBlurDisabled?: boolean;
     softFilterDisabled?: boolean;
+    retryDisabled?: boolean;
 }
-export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, scriptLoadDisabled, linkTextDisabled, backgroundBlurDisabled, softFilterDisabled, ...blockQuoteProps }: IGEmbedProps) => JSX.Element;
+export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, scriptLoadDisabled, linkTextDisabled, backgroundBlurDisabled, softFilterDisabled, retryDisabled, ...divProps }: IGEmbedProps) => JSX.Element;
