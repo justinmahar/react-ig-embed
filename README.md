@@ -106,6 +106,8 @@ The timer uses an exponential backoff, doubling the delay each time.
 
 To determine if the embed has succeeded, the timer function check to see if a `div` inside the placeholder `blockquote` exists. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
 
+You can disable this feature with the `retryDisabled` prop.
+
 ## How It Works
 
 This component relies on the [Instagram embed script](https://www.instagram.com/embed.js), which is loaded once to `window` by the `IGEmbed` component using [React Helmet](https://github.com/nfl/react-helmet).
