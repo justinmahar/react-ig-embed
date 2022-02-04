@@ -90,11 +90,11 @@ In addition, the following props are supported:
 
 Feel free to use props such as `className` and `style` to customize the component's appearance.
 
-You can also target this component with CSS using the `instagram-media-container` class name.
+You can also target this component with CSS using the `instagram-media-container` class name, and the inner component with `instagram-media`.
 
-The contents of this component are modified from a `blockquote` to an `iframe` once the embed completes.
+The contents of this component are modified from a `blockquote` to an `iframe` once the embed completes (both have the `instagram-media` class name).
 
-Note that Instagram restricts the dimensions of the embedded `iframe` to to a min width of `326px` and a max width of `540px`.
+Note that Instagram restricts the dimensions of the embedded `iframe` to a min width of `326px` and a max width of `540px`.
 
 By default, the style `{ overflow: 'clip' }` is applied.
 
@@ -104,7 +104,7 @@ This component includes a timer function that will check if the embed has succee
 
 The timer uses an exponential backoff, doubling the delay each time.
 
-To determine if the embed has succeeded, the timer function checks to see if a `div` no longer exists. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
+To determine if the embed has succeeded, the timer function checks to see if a div no longer exists in the DOM. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` attribute (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
 
 You can disable this feature with the `retryDisabled` prop.
 
