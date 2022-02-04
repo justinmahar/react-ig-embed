@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { BlockQuoteProps, DivProps } from 'react-html-props';
+import { DivProps } from 'react-html-props';
 
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
