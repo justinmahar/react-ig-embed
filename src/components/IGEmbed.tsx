@@ -6,7 +6,8 @@ import { DivProps } from 'react-html-props';
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
-const defaultRetryDelay = 1000;
+const defaultRetryInitialDelay = 1000;
+const defaultRetryBackoffMaxDelay = 30000;
 
 let embedScriptLoaded = false;
 
@@ -21,6 +22,8 @@ export interface IGEmbedProps extends DivProps {
   backgroundBlurDisabled?: boolean;
   softFilterDisabled?: boolean;
   retryDisabled?: boolean;
+  retryInitialDelay?: number;
+  retryBackoffMaxDelay?: number;
 }
 
 export const IGEmbed = ({
@@ -34,11 +37,14 @@ export const IGEmbed = ({
   backgroundBlurDisabled = false,
   softFilterDisabled = false,
   retryDisabled = false,
+  retryInitialDelay = defaultRetryInitialDelay,
+  retryBackoffMaxDelay = defaultRetryBackoffMaxDelay,
   ...divProps
 }: IGEmbedProps): JSX.Element => {
   const [initialized, setInitialized] = React.useState(false);
   const [processTime, setProcessTime] = React.useState(-1);
-  const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
+  const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
+  const [retryTime, setRetryTime] = React.useState(-1);
   const uuidRef = React.useRef(generateUUID());
   React.useEffect(() => {
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
@@ -61,7 +67,7 @@ export const IGEmbed = ({
         setTimeout(() => {
           setProcessTime(Date.now());
           setInitialized(true);
-        }, processDelay);
+        }, Math.max(0, processDelay));
       } else if (processDelay === 0) {
         setProcessTime(Date.now());
         setInitialized(true);
@@ -78,13 +84,14 @@ export const IGEmbed = ({
         const preEmbedElement = document.getElementById(uuidRef.current);
         if (!!preEmbedElement) {
           setProcessTime(Date.now());
-          setRetryDelay(retryDelay * 2);
+          setRetryDelay(Math.max(0, Math.min(retryDelay * 2, retryBackoffMaxDelay)));
+          setRetryTime(Date.now());
         }
-      }, retryDelay);
+      }, Math.max(0, retryDelay));
     }
 
     return () => clearTimeout(timeout);
-  }, [initialized, retryDelay, retryDisabled]);
+  }, [initialized, retryBackoffMaxDelay, retryDelay, retryDisabled, retryTime]);
 
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;

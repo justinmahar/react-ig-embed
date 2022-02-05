@@ -29,12 +29,14 @@ const react_helmet_1 = require("react-helmet");
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
-const defaultRetryDelay = 1000;
+const defaultRetryInitialDelay = 1000;
+const defaultRetryBackoffMaxDelay = 30000;
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, retryDisabled = false, ...divProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
-    const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
+    const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
+    const [retryTime, setRetryTime] = React.useState(-1);
     const uuidRef = React.useRef(generateUUID());
     React.useEffect(() => {
         const win = typeof window !== 'undefined' ? window : undefined;
@@ -57,7 +59,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                 setTimeout(() => {
                     setProcessTime(Date.now());
                     setInitialized(true);
-                }, processDelay);
+                }, Math.max(0, processDelay));
             }
             else if (processDelay === 0) {
                 setProcessTime(Date.now());
@@ -74,12 +76,13 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                 const preEmbedElement = document.getElementById(uuidRef.current);
                 if (!!preEmbedElement) {
                     setProcessTime(Date.now());
-                    setRetryDelay(retryDelay * 2);
+                    setRetryDelay(Math.max(0, Math.min(retryDelay * 2, retryBackoffMaxDelay)));
+                    setRetryTime(Date.now());
                 }
-            }, retryDelay);
+            }, Math.max(0, retryDelay));
         }
         return () => clearTimeout(timeout);
-    }, [initialized, retryDelay, retryDisabled]);
+    }, [initialized, retryBackoffMaxDelay, retryDelay, retryDisabled, retryTime]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
     return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'hidden', ...divProps.style }, key: `${uuidRef}-${retryDelay}` },

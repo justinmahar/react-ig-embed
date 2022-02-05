@@ -85,6 +85,8 @@ In addition, the following props are supported:
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
 | `softFilterDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable the soft white filter over the background image (if provided) shown while the post loads. Default `false`.             |
+| `retryInitialDelay`      | `number` or `undefined`  | *Optional.* Initial delay for retry timer in milliseconds. Will double after every failure. Default `1000`.                                                 |
+| `retryBackoffMaxDelay`   | `number` or `undefined`  | *Optional.* Max delay for retry timer in milliseconds. Default `30000`.                                                                                     |
 
 ## Styling
 
@@ -102,9 +104,11 @@ By default, the style `{ overflow: 'hidden' }` is applied.
 
 This component includes a timer function that will check if the embed has succeeded. If not, it will reattempt the embed.
 
-The timer uses an exponential backoff, doubling the delay each time.
+The timer uses an exponential backoff, doubling the delay each time. The default initial delay is 1 second and max delay is 30 seconds. These are configurable via the `retryInitialDelay` and `retryBackoffMaxDelay` props.
 
 To determine if the embed has succeeded, the timer function checks to see if a div no longer exists in the DOM. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` attribute (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
+
+If you would like a more aggressive approach, you can specify both the `retryInitialDelay` and `retryBackoffMaxDelay` props to `1000` milliseconds. This will cause a retry every 1 second, effectively with no exponential backoff.
 
 You can disable this feature with the `retryDisabled` prop.
 
