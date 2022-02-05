@@ -84,6 +84,7 @@ In addition, the following props are supported:
 | `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
+| `spinnerDisabled`        | `boolean` or `undefined` | *Optional.* Set to `true` to disable showing a spinner. Default `false`.                                                                                    |
 | `softFilterDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable the soft white filter over the background image (if provided) shown while the post loads. Default `false`.             |
 | `retryInitialDelay`      | `number` or `undefined`  | *Optional.* Initial delay for retry timer in milliseconds. Will double after every failure. Default `1000`.                                                 |
 | `retryBackoffMaxDelay`   | `number` or `undefined`  | *Optional.* Max delay for retry timer in milliseconds. Default `30000`.                                                                                     |

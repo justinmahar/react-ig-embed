@@ -26,13 +26,14 @@ exports.IGEmbed = void 0;
 const classnames_1 = __importDefault(require("classnames"));
 const React = __importStar(require("react"));
 const react_helmet_1 = require("react-helmet");
+const styled_components_1 = __importDefault(require("styled-components"));
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
 const defaultRetryInitialDelay = 1000;
 const defaultRetryBackoffMaxDelay = 30000;
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, spinnerDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
     const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
@@ -108,12 +109,12 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                         textDecoration: 'none',
                         width: '100%',
                     }, target: "_blank", rel: "noreferrer" },
-                    React.createElement(IGHeader, null),
+                    React.createElement(IGHeader, { showSpinner: !spinnerDisabled }),
                     React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, softFilterDisabled: softFilterDisabled }),
                     React.createElement(IGFooter, null))))));
 };
 exports.IGEmbed = IGEmbed;
-const IGHeader = () => {
+const IGHeader = (props) => {
     return (React.createElement("div", { className: "instagram-media-header", style: { display: 'flex', flexDirection: 'row', alignItems: 'center' } },
         React.createElement("div", { style: {
                 backgroundColor: '#F4F4F4',
@@ -138,7 +139,9 @@ const IGHeader = () => {
                     flexGrow: 0,
                     height: '14px',
                     width: '60px',
-                } }))));
+                } })),
+        props.showSpinner && (React.createElement("div", null,
+            React.createElement(Spinner, { size: 30 })))));
 };
 const IGBody = (props) => {
     return (React.createElement("div", { className: "instagram-media-body", style: {
@@ -276,3 +279,22 @@ const generateUUID = () => {
         return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
     });
 };
+const Spinner = styled_components_1.default.div `
+  & {
+    border: ${(props) => Math.max(Math.round(0.13333 * props.size), 1)}px solid #f3f3f3; /* Light grey */
+    border-top: ${(props) => Math.max(Math.round(0.13333 * props.size), 1)}px solid #000000; /* Black */
+    border-radius: 50%;
+    width: ${(props) => Math.max(props.size, 1)}px;
+    height: ${(props) => Math.max(props.size, 1)}px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;

@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { DivProps } from 'react-html-props';
+import { DivProps, DivPropsWithoutRef } from 'react-html-props';
+import styled from 'styled-components';
 
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
@@ -20,6 +21,7 @@ export interface IGEmbedProps extends DivProps {
   scriptLoadDisabled?: boolean;
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
+  spinnerDisabled?: boolean;
   softFilterDisabled?: boolean;
   retryDisabled?: boolean;
   retryInitialDelay?: number;
@@ -35,6 +37,7 @@ export const IGEmbed = ({
   scriptLoadDisabled = false,
   linkTextDisabled = false,
   backgroundBlurDisabled = false,
+  spinnerDisabled = false,
   softFilterDisabled = false,
   retryDisabled = false,
   retryInitialDelay = defaultRetryInitialDelay,
@@ -137,7 +140,7 @@ export const IGEmbed = ({
             target="_blank"
             rel="noreferrer"
           >
-            <IGHeader />
+            <IGHeader showSpinner={!spinnerDisabled} />
             <IGBody
               url={cleanUrlWithEndingSlash}
               backgroundUrl={backgroundUrl}
@@ -154,7 +157,7 @@ export const IGEmbed = ({
   );
 };
 
-const IGHeader = () => {
+const IGHeader = (props: { showSpinner: boolean }) => {
   return (
     <div className="instagram-media-header" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <div
@@ -188,6 +191,11 @@ const IGHeader = () => {
           }}
         />
       </div>
+      {props.showSpinner && (
+        <div>
+          <Spinner size={30} />
+        </div>
+      )}
     </div>
   );
 };
@@ -392,3 +400,27 @@ const generateUUID = () => {
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 };
+
+interface SpinnerProps extends DivPropsWithoutRef {
+  size: number;
+}
+
+const Spinner: (props: SpinnerProps) => JSX.Element = styled.div`
+  & {
+    border: ${(props: SpinnerProps) => Math.max(Math.round(0.13333 * props.size), 1)}px solid #f3f3f3; /* Light grey */
+    border-top: ${(props: SpinnerProps) => Math.max(Math.round(0.13333 * props.size), 1)}px solid #000000; /* Black */
+    border-radius: 50%;
+    width: ${(props: SpinnerProps) => Math.max(props.size, 1)}px;
+    height: ${(props: SpinnerProps) => Math.max(props.size, 1)}px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
