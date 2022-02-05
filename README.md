@@ -96,7 +96,7 @@ The contents of this component are modified from a `blockquote` to an `iframe` o
 
 Note that Instagram restricts the dimensions of the embedded `iframe` to a min width of `326px` and a max width of `540px`.
 
-By default, the style `{ overflow: 'clip' }` is applied.
+By default, the style `{ overflow: 'hidden' }` is applied.
 
 ## Retry Timer
 
