@@ -21,6 +21,7 @@ export interface IGEmbedProps extends DivProps {
   scriptLoadDisabled?: boolean;
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
+  backgroundBlurAnimationDisabled?: boolean;
   spinnerDisabled?: boolean;
   softFilterDisabled?: boolean;
   retryDisabled?: boolean;
@@ -37,6 +38,7 @@ export const IGEmbed = ({
   scriptLoadDisabled = false,
   linkTextDisabled = false,
   backgroundBlurDisabled = false,
+  backgroundBlurAnimationDisabled = false,
   spinnerDisabled = false,
   softFilterDisabled = false,
   retryDisabled = false,
@@ -147,6 +149,7 @@ export const IGEmbed = ({
               linkText={linkText}
               linkTextDisabled={linkTextDisabled}
               backgroundBlurDisabled={backgroundBlurDisabled}
+              backgroundBlurAnimationDisabled={backgroundBlurAnimationDisabled}
               softFilterDisabled={softFilterDisabled}
             />
             <IGFooter />
@@ -206,11 +209,12 @@ interface IGBodyProps {
   linkText?: string;
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
+  backgroundBlurAnimationDisabled?: boolean;
   softFilterDisabled?: boolean;
 }
 const IGBody = (props: IGBodyProps) => {
   return (
-    <div
+    <IGBodyDiv
       className="instagram-media-body"
       style={{
         backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
@@ -222,10 +226,13 @@ const IGBody = (props: IGBodyProps) => {
       }}
     >
       <div
+        className={props.backgroundBlurDisabled || props.backgroundBlurAnimationDisabled ? undefined : 'backdrop-blur'}
         style={{
+          backdropFilter:
+            props.backgroundBlurDisabled || !props.backgroundBlurAnimationDisabled ? undefined : 'blur(4px)',
+          WebkitBackdropFilter:
+            props.backgroundBlurDisabled || !props.backgroundBlurAnimationDisabled ? undefined : 'blur(4px)',
           backgroundColor: props.softFilterDisabled ? undefined : 'rgba(255,255,255,0.7)',
-          backdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
-          WebkitBackdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
         }}
       >
         <div style={{ padding: '16% 0' }} />
@@ -267,7 +274,7 @@ const IGBody = (props: IGBodyProps) => {
         </div>
         <div style={{ padding: '15.5% 0' }} />
       </div>
-    </div>
+    </IGBodyDiv>
   );
 };
 
@@ -421,6 +428,25 @@ const Spinner: (props: SpinnerProps) => JSX.Element = styled.div`
     }
     100% {
       transform: rotate(360deg);
+    }
+  }
+`;
+
+const IGBodyDiv = styled.div`
+  .backdrop-blur {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: bgBlur 0.25s ease-in-out 1;
+  }
+
+  @keyframes bgBlur {
+    0% {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    100% {
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
   }
 `;

@@ -9,10 +9,11 @@ export interface IGEmbedProps extends DivProps {
     scriptLoadDisabled?: boolean;
     linkTextDisabled?: boolean;
     backgroundBlurDisabled?: boolean;
+    backgroundBlurAnimationDisabled?: boolean;
     spinnerDisabled?: boolean;
     softFilterDisabled?: boolean;
     retryDisabled?: boolean;
     retryInitialDelay?: number;
     retryBackoffMaxDelay?: number;
 }
-export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, scriptLoadDisabled, linkTextDisabled, backgroundBlurDisabled, spinnerDisabled, softFilterDisabled, retryDisabled, retryInitialDelay, retryBackoffMaxDelay, ...divProps }: IGEmbedProps) => JSX.Element;
+export declare const IGEmbed: ({ url, backgroundUrl, igVersion, linkText, processDelay, scriptLoadDisabled, linkTextDisabled, backgroundBlurDisabled, backgroundBlurAnimationDisabled, spinnerDisabled, softFilterDisabled, retryDisabled, retryInitialDelay, retryBackoffMaxDelay, ...divProps }: IGEmbedProps) => JSX.Element;

@@ -33,7 +33,7 @@ const defaultProcessDelay = 100;
 const defaultRetryInitialDelay = 1000;
 const defaultRetryBackoffMaxDelay = 30000;
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, spinnerDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, backgroundBlurAnimationDisabled = false, spinnerDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
     const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
@@ -110,7 +110,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                         width: '100%',
                     }, target: "_blank", rel: "noreferrer" },
                     React.createElement(IGHeader, { showSpinner: !spinnerDisabled }),
-                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, softFilterDisabled: softFilterDisabled }),
+                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, backgroundBlurAnimationDisabled: backgroundBlurAnimationDisabled, softFilterDisabled: softFilterDisabled }),
                     React.createElement(IGFooter, null))))));
 };
 exports.IGEmbed = IGEmbed;
@@ -144,7 +144,7 @@ const IGHeader = (props) => {
             React.createElement(Spinner, { size: 30 })))));
 };
 const IGBody = (props) => {
-    return (React.createElement("div", { className: "instagram-media-body", style: {
+    return (React.createElement(IGBodyDiv, { className: "instagram-media-body", style: {
             backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
             backgroundRepeat: props.backgroundUrl ? 'no-repeat' : undefined,
             backgroundPosition: props.backgroundUrl ? 'center' : undefined,
@@ -152,10 +152,10 @@ const IGBody = (props) => {
             marginTop: props.backgroundUrl ? '16px' : undefined,
             marginBottom: props.backgroundUrl ? '16px' : undefined,
         } },
-        React.createElement("div", { style: {
+        React.createElement("div", { className: props.backgroundBlurDisabled || props.backgroundBlurAnimationDisabled ? undefined : 'backdrop-blur', style: {
+                backdropFilter: props.backgroundBlurDisabled || !props.backgroundBlurAnimationDisabled ? undefined : 'blur(4px)',
+                WebkitBackdropFilter: props.backgroundBlurDisabled || !props.backgroundBlurAnimationDisabled ? undefined : 'blur(4px)',
                 backgroundColor: props.softFilterDisabled ? undefined : 'rgba(255,255,255,0.7)',
-                backdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
-                WebkitBackdropFilter: props.backgroundBlurDisabled ? undefined : 'blur(4px)',
             } },
             React.createElement("div", { style: { padding: '16% 0' } }),
             React.createElement("div", { style: { display: 'block', height: '50px', margin: '0 auto 12px', width: '50px' } },
@@ -295,6 +295,24 @@ const Spinner = styled_components_1.default.div `
     }
     100% {
       transform: rotate(360deg);
+    }
+  }
+`;
+const IGBodyDiv = styled_components_1.default.div `
+  .backdrop-blur {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: bgBlur 0.25s ease-in-out 1;
+  }
+
+  @keyframes bgBlur {
+    0% {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    100% {
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
   }
 `;
