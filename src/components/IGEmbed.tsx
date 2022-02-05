@@ -107,7 +107,7 @@ export const IGEmbed = ({
     <div
       className={classNames('instagram-media-container', divProps.className)}
       style={{ overflow: 'hidden', ...divProps.style }}
-      key={`${uuidRef}-${retryDelay}`}
+      key={`${uuidRef}-${retryTime}`}
     >
       {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
         <Helmet>{<script src="//www.instagram.com/embed.js"></script>}</Helmet>
