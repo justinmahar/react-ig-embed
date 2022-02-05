@@ -102,7 +102,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                 width: 'calc(100% - 2px)',
                 ...divProps.style,
             } },
-            React.createElement("div", { className: "instagram-media-pre-embed", id: uuidRef.current, style: { padding: '16px' } },
+            React.createElement("div", { className: "instagram-media-pre-embed", id: uuidRef.current, style: { padding: '16px 0' } },
                 React.createElement("a", { href: `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, style: {
                         background: '#FFFFFF',
                         lineHeight: 0,
@@ -117,7 +117,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
 };
 exports.IGEmbed = IGEmbed;
 const IGHeader = (props) => {
-    return (React.createElement("div", { className: "instagram-media-header", style: { display: 'flex', flexDirection: 'row', alignItems: 'center' } },
+    return (React.createElement("div", { className: "instagram-media-header", style: { display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0 16px' } },
         React.createElement("div", { style: {
                 backgroundColor: '#F4F4F4',
                 borderRadius: '50%',
@@ -181,7 +181,7 @@ const IGBody = (props) => {
             React.createElement("div", { style: { padding: '15.5% 0' } }))));
 };
 const IGFooter = () => {
-    return (React.createElement("div", { className: "instagram-media-footer" },
+    return (React.createElement("div", { className: "instagram-media-footer", style: { padding: '0 16px' } },
         React.createElement("div", { style: { display: 'flex', flexDirection: 'row', marginBottom: '14px', alignItems: 'center' } },
             React.createElement("div", null,
                 React.createElement("div", { style: {
