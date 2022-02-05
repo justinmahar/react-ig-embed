@@ -32,8 +32,9 @@ const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
 const defaultRetryInitialDelay = 1000;
 const defaultRetryBackoffMaxDelay = 30000;
+const defaultBackgroundBlurAnimationDuration = 700;
 let embedScriptLoaded = false;
-const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, backgroundBlurAnimationDisabled = false, spinnerDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
+const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, backgroundBlurAnimationDisabled = false, backgroundBlurAnimationDuration = defaultBackgroundBlurAnimationDuration, spinnerDisabled = false, softFilterDisabled = false, retryDisabled = false, retryInitialDelay = defaultRetryInitialDelay, retryBackoffMaxDelay = defaultRetryBackoffMaxDelay, ...divProps }) => {
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
     const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
@@ -111,7 +112,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                         width: '100%',
                     }, target: "_blank", rel: "noreferrer" },
                     React.createElement(IGHeader, { showSpinner: !spinnerDisabled }),
-                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, backgroundBlurAnimationDisabled: retrying || backgroundBlurAnimationDisabled, softFilterDisabled: softFilterDisabled }),
+                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, backgroundBlurAnimationDisabled: retrying || backgroundBlurAnimationDisabled, backgroundBlurAnimationDuration: backgroundBlurAnimationDuration, softFilterDisabled: softFilterDisabled }),
                     React.createElement(IGFooter, null))))));
 };
 exports.IGEmbed = IGEmbed;
@@ -145,7 +146,9 @@ const IGHeader = (props) => {
             React.createElement(Spinner, { size: 30 })))));
 };
 const IGBody = (props) => {
-    return (React.createElement(IGBodyDiv, { className: "instagram-media-body", style: {
+    return (React.createElement(IGBodyDiv, { backgroundBlurAnimationDuration: Math.abs(typeof props.backgroundBlurAnimationDuration === 'number'
+            ? props.backgroundBlurAnimationDuration
+            : defaultBackgroundBlurAnimationDuration), className: "instagram-media-body", style: {
             backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
             backgroundRepeat: props.backgroundUrl ? 'no-repeat' : undefined,
             backgroundPosition: props.backgroundUrl ? 'center' : undefined,
@@ -303,7 +306,7 @@ const IGBodyDiv = styled_components_1.default.div `
   .backdrop-blur {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    animation: bgBlur 0.25s ease-in-out 1;
+    animation: bgBlur ${(props) => props.backgroundBlurAnimationDuration / 1000}s ease 1;
   }
 
   @keyframes bgBlur {
