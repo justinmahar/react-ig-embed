@@ -126,7 +126,7 @@ The blur style features a 250 millisecond animation of the image becoming less b
 <IGEmbed url="https://www.instagram.com/p/CUbHfhpswxt/" backgroundUrl="/media/engines.jpeg" />
 ```
 
-![Example Embed With Background URL](./screenshots/example-background.png)
+![Example Embed With Background URL](./screenshots/example-blur-anim.gif)
 
 ## Script Load
 
