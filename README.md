@@ -35,7 +35,7 @@ The result: Fast and easy embedding of public posts! 🎉
 - **🔓 No access token needed!**
   - Uses Instagram's [Embed JS script](https://developers.facebook.com/docs/instagram/oembed/) directly. No API call or access token needed.
 - **⚡️ Fast**
-  - Embeds usually complete in less than 1 second (often far less).
+  - Embeds content in less than 1 second (often far less).
 - **💪 Resilient**
   - If embedding fails, it automatically retries using an exponential backoff.
 - **⚙️ Customizable**
