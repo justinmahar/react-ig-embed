@@ -88,7 +88,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
     }, [initialized, retryBackoffMaxDelay, retryDelay, retryDisabled, retryTime]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
-    return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'hidden', ...divProps.style }, key: `${uuidRef}-${retryTime}` },
+    return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'hidden', width: '100%', maxWidth: '540px', ...divProps.style }, key: `${uuidRef}-${retryTime}` },
         !scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null, React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
         React.createElement("blockquote", { className: "instagram-media", "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...divProps, style: {
                 background: '#FFF',
