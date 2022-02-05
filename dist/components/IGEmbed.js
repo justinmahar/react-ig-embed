@@ -37,6 +37,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
     const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
+    const [retrying, setRetrying] = React.useState(false);
     const [retryTime, setRetryTime] = React.useState(-1);
     const uuidRef = React.useRef(generateUUID());
     React.useEffect(() => {
@@ -79,6 +80,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                     setProcessTime(Date.now());
                     setRetryDelay(Math.max(0, Math.min(retryDelay * 2, retryBackoffMaxDelay)));
                     setRetryTime(Date.now());
+                    setRetrying(true);
                 }
             }, Math.max(0, retryDelay));
         }
@@ -110,7 +112,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                         width: '100%',
                     }, target: "_blank", rel: "noreferrer" },
                     React.createElement(IGHeader, { showSpinner: !spinnerDisabled }),
-                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, backgroundBlurAnimationDisabled: backgroundBlurAnimationDisabled, softFilterDisabled: softFilterDisabled }),
+                    React.createElement(IGBody, { url: cleanUrlWithEndingSlash, backgroundUrl: backgroundUrl, linkText: linkText, linkTextDisabled: linkTextDisabled, backgroundBlurDisabled: backgroundBlurDisabled, backgroundBlurAnimationDisabled: retrying || backgroundBlurAnimationDisabled, softFilterDisabled: softFilterDisabled }),
                     React.createElement(IGFooter, null))))));
 };
 exports.IGEmbed = IGEmbed;

@@ -49,6 +49,7 @@ export const IGEmbed = ({
   const [initialized, setInitialized] = React.useState(false);
   const [processTime, setProcessTime] = React.useState(-1);
   const [retryDelay, setRetryDelay] = React.useState(retryInitialDelay);
+  const [retrying, setRetrying] = React.useState(false);
   const [retryTime, setRetryTime] = React.useState(-1);
   const uuidRef = React.useRef(generateUUID());
   React.useEffect(() => {
@@ -91,6 +92,7 @@ export const IGEmbed = ({
           setProcessTime(Date.now());
           setRetryDelay(Math.max(0, Math.min(retryDelay * 2, retryBackoffMaxDelay)));
           setRetryTime(Date.now());
+          setRetrying(true);
         }
       }, Math.max(0, retryDelay));
     }
@@ -149,7 +151,7 @@ export const IGEmbed = ({
               linkText={linkText}
               linkTextDisabled={linkTextDisabled}
               backgroundBlurDisabled={backgroundBlurDisabled}
-              backgroundBlurAnimationDisabled={backgroundBlurAnimationDisabled}
+              backgroundBlurAnimationDisabled={retrying || backgroundBlurAnimationDisabled}
               softFilterDisabled={softFilterDisabled}
             />
             <IGFooter />
