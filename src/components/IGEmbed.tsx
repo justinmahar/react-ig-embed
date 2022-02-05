@@ -6,7 +6,7 @@ import { DivProps } from 'react-html-props';
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
-const defaultRetryDelay = 500;
+const defaultRetryDelay = 1000;
 
 let embedScriptLoaded = false;
 
@@ -39,12 +39,13 @@ export const IGEmbed = ({
   const [initialized, setInitialized] = React.useState(false);
   const [processTime, setProcessTime] = React.useState(-1);
   const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
-  const preEmbedElementId = React.useRef(generateUUID());
+  const uuidRef = React.useRef(generateUUID());
   React.useEffect(() => {
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
     if (win && processTime >= 0) {
       // This call will use the IG embed script to process all elements with the `instagram-media` class name.
       if (win.instgrm?.Embeds) {
+        // console.log('Processing...', Date.now());
         win.instgrm.Embeds.process();
       } else {
         console.error('Instagram embed script not found. Unable to process Instagram embed:', url);
@@ -74,7 +75,7 @@ export const IGEmbed = ({
     let timeout: any = undefined;
     if (initialized && !retryDisabled && typeof document !== 'undefined') {
       timeout = setTimeout(() => {
-        const preEmbedElement = document.getElementById(preEmbedElementId.current);
+        const preEmbedElement = document.getElementById(uuidRef.current);
         if (!!preEmbedElement) {
           setProcessTime(Date.now());
           setRetryDelay(retryDelay * 2);
@@ -92,6 +93,7 @@ export const IGEmbed = ({
     <div
       className={classNames('instagram-media-container', divProps.className)}
       style={{ overflow: 'clip', ...divProps.style }}
+      key={`${uuidRef}-${retryDelay}`}
     >
       {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
         <Helmet>{<script src="//www.instagram.com/embed.js"></script>}</Helmet>
@@ -114,7 +116,7 @@ export const IGEmbed = ({
           ...divProps.style,
         }}
       >
-        <div className="instagram-media-pre-embed" id={preEmbedElementId.current} style={{ padding: '16px' }}>
+        <div className="instagram-media-pre-embed" id={uuidRef.current} style={{ padding: '16px' }}>
           <a
             href={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
             style={{

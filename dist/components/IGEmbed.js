@@ -29,18 +29,19 @@ const react_helmet_1 = require("react-helmet");
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
-const defaultRetryDelay = 500;
+const defaultRetryDelay = 1000;
 let embedScriptLoaded = false;
 const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = defaultLinkText, processDelay = defaultProcessDelay, scriptLoadDisabled = false, linkTextDisabled = false, backgroundBlurDisabled = false, softFilterDisabled = false, retryDisabled = false, ...divProps }) => {
     const [initialized, setInitialized] = React.useState(false);
     const [processTime, setProcessTime] = React.useState(-1);
     const [retryDelay, setRetryDelay] = React.useState(defaultRetryDelay);
-    const preEmbedElementId = React.useRef(generateUUID());
+    const uuidRef = React.useRef(generateUUID());
     React.useEffect(() => {
         const win = typeof window !== 'undefined' ? window : undefined;
         if (win && processTime >= 0) {
             // This call will use the IG embed script to process all elements with the `instagram-media` class name.
             if (win.instgrm?.Embeds) {
+                // console.log('Processing...', Date.now());
                 win.instgrm.Embeds.process();
             }
             else {
@@ -70,7 +71,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
         let timeout = undefined;
         if (initialized && !retryDisabled && typeof document !== 'undefined') {
             timeout = setTimeout(() => {
-                const preEmbedElement = document.getElementById(preEmbedElementId.current);
+                const preEmbedElement = document.getElementById(uuidRef.current);
                 if (!!preEmbedElement) {
                     setProcessTime(Date.now());
                     setRetryDelay(retryDelay * 2);
@@ -81,7 +82,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
     }, [initialized, retryDelay, retryDisabled]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
-    return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'clip', ...divProps.style } },
+    return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'clip', ...divProps.style }, key: `${uuidRef}-${retryDelay}` },
         !scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null, React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
         React.createElement("blockquote", { className: "instagram-media", "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...divProps, style: {
                 background: '#FFF',
@@ -95,7 +96,7 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
                 width: 'calc(100% - 2px)',
                 ...divProps.style,
             } },
-            React.createElement("div", { className: "instagram-media-pre-embed", id: preEmbedElementId.current, style: { padding: '16px' } },
+            React.createElement("div", { className: "instagram-media-pre-embed", id: uuidRef.current, style: { padding: '16px' } },
                 React.createElement("a", { href: `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, style: {
                         background: '#FFFFFF',
                         lineHeight: 0,
