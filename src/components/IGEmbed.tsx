@@ -130,7 +130,7 @@ export const IGEmbed = ({
           ...divProps.style,
         }}
       >
-        <div className="instagram-media-pre-embed" id={uuidRef.current} style={{ padding: '16px' }}>
+        <div className="instagram-media-pre-embed" id={uuidRef.current} style={{ padding: '16px 0' }}>
           <a
             href={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
             style={{
@@ -164,7 +164,10 @@ export const IGEmbed = ({
 
 const IGHeader = (props: { showSpinner: boolean }) => {
   return (
-    <div className="instagram-media-header" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <div
+      className="instagram-media-header"
+      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0 16px' }}
+    >
       <div
         style={{
           backgroundColor: '#F4F4F4',
@@ -282,7 +285,7 @@ const IGBody = (props: IGBodyProps) => {
 
 const IGFooter = () => {
   return (
-    <div className="instagram-media-footer">
+    <div className="instagram-media-footer" style={{ padding: '0 16px' }}>
       <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '14px', alignItems: 'center' }}>
         <div>
           <div
