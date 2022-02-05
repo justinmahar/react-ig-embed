@@ -34,6 +34,8 @@ The result: Easy embedding of public posts! 🎉
   - Just provide a URL, that's it!
 - **🔓 No access token needed!**
   - Uses Instagram's [embed script](https://developers.facebook.com/docs/instagram/oembed/), which doesn't require an API token.
+- **⚡️ Fast**
+  - Embeds in under a second in most conditions.
 - **💪 Resilient**
   - If embedding fails, it automatically retries using an exponential backoff.
 - **💁 Customizable**
@@ -132,7 +134,7 @@ The blur style features a 250 millisecond animation of the image becoming less b
 
 The [Instragram Embed JS script](https://www.instagram.com/embed.js) is loaded once to `window` when this component renders using [React Helmet](https://github.com/nfl/react-helmet).
 
-You may want to load the script yourself elsewhere. If this is the case, use the `scriptLoadDisabled` to disable loading the script in `IGEmbed`.
+You may want to load the script yourself elsewhere. If this is the case, use the `scriptLoadDisabled` prop to disable loading the script in `IGEmbed`.
 
 ## Process Delay
 
