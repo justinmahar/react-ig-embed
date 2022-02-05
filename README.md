@@ -50,7 +50,7 @@ npm i react-ig-embed
 Simply import and provide the URL to the public post you'd like to embed.
 
 ```jsx
-import { IGEmbed } from "react-ig-embed";
+import { IGEmbed } from 'react-ig-embed';
 ```
 
 ```jsx
@@ -76,18 +76,18 @@ In addition, the following props are supported:
 | Prop Name                | Type                     | Description                                                                                                                                                 |
 | ------------------------ | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `url`                    | `string`                 | **Required.** The Instagram URL for the post to embed.                                                                                                      |
-| `backgroundUrl`          | `string` or `undefined`  | *Optional.* A URL to an image to show (blurred) while the post loads.                                                                                       |
-| `igVersion`              | `string` or `undefined`  | *Optional.* The API version to use. Defaults to `"14"`.                                                                                                     |
-| `linkText`               | `string` or `undefined`  | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`                                                         |
-| `processDelay`           | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
-| `retryDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable exponential backoff retry timer. Default `false`.                                                                      |
-| `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
+| ``linkText``             | `string` or `undefined`  | *Optional.* The link text to show while the post loads. Defaults to `"View this post on Instagram"`                                                         |
 | `linkTextDisabled`       | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
+| `backgroundUrl`          | `string` or `undefined`  | *Optional.* A URL to an image to show (blurred) while the post loads.                                                                                       |
 | `backgroundBlurDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
-| `spinnerDisabled`        | `boolean` or `undefined` | *Optional.* Set to `true` to disable showing a spinner. Default `false`.                                                                                    |
 | `softFilterDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable the soft white filter over the background image (if provided) shown while the post loads. Default `false`.             |
+| `spinnerDisabled`        | `boolean` or `undefined` | *Optional.* Set to `true` to disable showing a spinner. Default `false`.                                                                                    |
+| `processDelay`           | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
+| `scriptLoadDisabled`     | `boolean` or `undefined` | *Optional.* Set to `true` to disable loading the embed script, in which case you'll need to load it yourself elsewhere. Default `false` (script is loaded). |
+| `retryDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable exponential backoff retry timer. Default `false`.                                                                      |
 | `retryInitialDelay`      | `number` or `undefined`  | *Optional.* Initial delay for retry timer in milliseconds. Will double after every failure. Default `1000`.                                                 |
 | `retryBackoffMaxDelay`   | `number` or `undefined`  | *Optional.* Max delay for retry timer in milliseconds. Default `30000`.                                                                                     |
+| `igVersion`              | `string` or `undefined`  | *Optional.* The API version to use. Defaults to `"14"`.                                                                                                     |
 
 ## Styling
 
@@ -100,6 +100,42 @@ The contents of this component are modified from a `blockquote` to an `iframe` o
 Note that Instagram restricts the dimensions of the embedded `iframe` to a min width of `326px` and a max width of `540px`.
 
 By default, the style `{ overflow: 'hidden' }` is applied.
+
+### Link Text
+
+You can customize the link text shown if you'd like. The default is `"View this post on Instagram"`.
+
+Customize this with the `linkText` prop, and disable the link text (and logo) altogether with `linkTextDisabled`.
+
+### Spinner
+
+A spinner is shown in the upper-right of the post.
+
+You can disable this with `spinnerDisabled`.
+
+### Background Image
+
+You can provide a background image to show while the post loads using the `backgroundUrl` prop. In my opinion, this bit of context brings the embed loader to life a little.
+
+The image will be rendered blurred with a soft white filter over it, making the link text more readable. You can disable these styles with `backgroundBlurDisabled` and `softFilterDisabled`.
+
+```jsx
+<IGEmbed url="https://www.instagram.com/p/CUbHfhpswxt/" backgroundUrl="/media/engines.jpeg" />
+```
+
+![Example Embed With Background URL](./screenshots/example-background.png)
+
+## Script Load
+
+The [Instragram Embed JS script](https://www.instagram.com/embed.js) is loaded once to `window` when this component renders using [React Helmet](https://github.com/nfl/react-helmet).
+
+You may want to load the script yourself elsewhere. If this is the case, use the `scriptLoadDisabled` to disable loading the script in `IGEmbed`.
+
+## Process Delay
+
+This component uses a slight delay between rendering and processing the embed.
+
+If you'd like to customize this, specify the delay in milliseconds using `processDelay`. A value of `0` will cause no delay.
 
 ## Retry Timer
 
