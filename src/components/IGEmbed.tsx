@@ -9,6 +9,7 @@ const defaultLinkText = 'View this post on Instagram';
 const defaultProcessDelay = 100;
 const defaultRetryInitialDelay = 1000;
 const defaultRetryBackoffMaxDelay = 30000;
+const defaultBackgroundBlurAnimationDuration = 700;
 
 let embedScriptLoaded = false;
 
@@ -22,6 +23,7 @@ export interface IGEmbedProps extends DivProps {
   linkTextDisabled?: boolean;
   backgroundBlurDisabled?: boolean;
   backgroundBlurAnimationDisabled?: boolean;
+  backgroundBlurAnimationDuration?: number;
   spinnerDisabled?: boolean;
   softFilterDisabled?: boolean;
   retryDisabled?: boolean;
@@ -39,6 +41,7 @@ export const IGEmbed = ({
   linkTextDisabled = false,
   backgroundBlurDisabled = false,
   backgroundBlurAnimationDisabled = false,
+  backgroundBlurAnimationDuration = defaultBackgroundBlurAnimationDuration,
   spinnerDisabled = false,
   softFilterDisabled = false,
   retryDisabled = false,
@@ -151,6 +154,7 @@ export const IGEmbed = ({
               linkTextDisabled={linkTextDisabled}
               backgroundBlurDisabled={backgroundBlurDisabled}
               backgroundBlurAnimationDisabled={retrying || backgroundBlurAnimationDisabled}
+              backgroundBlurAnimationDuration={backgroundBlurAnimationDuration}
               softFilterDisabled={softFilterDisabled}
             />
             <IGFooter />
@@ -215,10 +219,16 @@ interface IGBodyProps {
   backgroundBlurDisabled?: boolean;
   backgroundBlurAnimationDisabled?: boolean;
   softFilterDisabled?: boolean;
+  backgroundBlurAnimationDuration?: number;
 }
 const IGBody = (props: IGBodyProps) => {
   return (
     <IGBodyDiv
+      backgroundBlurAnimationDuration={Math.abs(
+        typeof props.backgroundBlurAnimationDuration === 'number'
+          ? props.backgroundBlurAnimationDuration
+          : defaultBackgroundBlurAnimationDuration,
+      )}
       className="instagram-media-body"
       style={{
         backgroundImage: props.backgroundUrl ? `url("${props.backgroundUrl}")` : undefined,
@@ -436,11 +446,15 @@ const Spinner: (props: SpinnerProps) => JSX.Element = styled.div`
   }
 `;
 
-const IGBodyDiv = styled.div`
+interface IGBodyDivProps extends DivPropsWithoutRef {
+  backgroundBlurAnimationDuration: number;
+}
+
+const IGBodyDiv: (props: IGBodyDivProps) => JSX.Element = styled.div`
   .backdrop-blur {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    animation: bgBlur 0.25s ease-in-out 1;
+    animation: bgBlur ${(props: IGBodyDivProps) => props.backgroundBlurAnimationDuration / 1000}s ease 1;
   }
 
   @keyframes bgBlur {

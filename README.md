@@ -82,7 +82,8 @@ In addition, the following props are supported:
 | `linkTextDisabled`                | `boolean` or `undefined` | *Optional.* Set to `true` to disable rendering the link text and logo shown while the post loads. Default `false`.                                          |
 | `backgroundUrl`                   | `string` or `undefined`  | *Optional.* A URL to an image to show (blurred) while the post loads.                                                                                       |
 | `backgroundBlurDisabled`          | `boolean` or `undefined` | *Optional.* Set to `true` to disable blurring the background image (if provided) shown while the post loads. Default `false`.                               |
-| `backgroundBlurAnimationDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable the 250ms background blur animation. Default `false`.                                                                  |
+| `backgroundBlurAnimationDisabled` | `boolean` or `undefined` | *Optional.* Set to `true` to disable the background blur animation. Default `false`.                                                                        |
+| `backgroundBlurAnimationDuration` | `boolean` or `undefined` | *Optional.* Duration for background blur animation in milliseconds. Default `700`.                                                                          |
 | `softFilterDisabled`              | `boolean` or `undefined` | *Optional.* Set to `true` to disable the soft white filter over the background image (if provided) shown while the post loads. Default `false`.             |
 | `spinnerDisabled`                 | `boolean` or `undefined` | *Optional.* Set to `true` to disable showing a spinner. Default `false`.                                                                                    |
 | `processDelay`                    | `number` or `undefined`  | *Optional.* Delay between rendering the component and processing the embed, in milliseconds. Default `100`.                                                 |
@@ -122,7 +123,7 @@ You can provide a background image to show while the post loads using the `backg
 
 The image will be rendered blurred with a soft white filter over it, making the link text more readable. You can disable these styles with `backgroundBlurDisabled` and `softFilterDisabled`. 
 
-The blur style features a 250 millisecond animation of the image becoming less blurry. This subtle effect makes it less jarring when the embed succeeds. Disable the animation with `backgroundBlurAnimationDisabled`.
+The blur style features an animation of the image becoming less blurry. This subtle effect makes it less jarring when the embed succeeds. Disable the animation with `backgroundBlurAnimationDisabled`, and configure the duration with `backgroundBlurAnimationDuration`.
 
 ```jsx
 <IGEmbed url="https://www.instagram.com/p/CUbHfhpswxt/" backgroundUrl="/media/engines.jpeg" />
