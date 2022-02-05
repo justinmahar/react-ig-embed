@@ -37,7 +37,7 @@ The result: Fast and easy embedding of public posts! 🎉
 - **⚡️ Fast**
   - Embeds content in less than 1 second (often far less).
 - **💪 Resilient**
-  - If embedding fails, it automatically retries using an exponential backoff.
+  - If embedding fails, it automatically retries using exponential backoff.
 - **⚙️ Customizable**
   - Supports all `div` props and provides additional options, such as a background image and spinner.
 
@@ -147,11 +147,9 @@ If you'd like to customize this, specify the delay in milliseconds using `proces
 
 This component includes a timer function that will check if the embed has succeeded. If not, it will reattempt the embed.
 
-The timer uses an exponential backoff, doubling the delay each time. The default initial delay is 1 second and max delay is 30 seconds. These are configurable via the `retryInitialDelay` and `retryBackoffMaxDelay` props.
+The timer uses [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), doubling the delay each time. The default initial delay is 1 second and max delay is 30 seconds. These are configurable via the `retryInitialDelay` and `retryBackoffMaxDelay` props. For example, if you would like a more aggressive approach, try setting `retryBackoffMaxDelay` to `3000` milliseconds. This will cause the post to retry after 1 second, and then again at 2 seconds, and then every 3 seconds thereafter.
 
 To determine if the embed has succeeded, the timer function checks to see if a div no longer exists in the DOM. This div has the class name `instagram-media-pre-embed` and a randomly generated `id` attribute (uuid string), which it uses to check for existence using `document.getElementById()`. This div will be replaced when the embed succeeds, so if the div still exists in the DOM, the embed likely failed and it will reattempt the embed.
-
-If you would like a more aggressive approach, you can specify both the `retryInitialDelay` and `retryBackoffMaxDelay` props to `1000` milliseconds. This will cause a retry every 1 second, effectively with no exponential backoff.
 
 You can disable this feature with the `retryDisabled` prop.
 
