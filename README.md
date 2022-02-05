@@ -61,7 +61,7 @@ import { IGEmbed } from "react-ig-embed";
 
 #### Embed Loading
 
-![Example Embed Loading](./screenshots/example-loading.gif)
+![Example Embed Loading](./screenshots/example-loading.png)
 
 #### Embed Complete
 
