@@ -26,20 +26,20 @@ You then likely realized that this is a huge hassle, and requires you to jump th
 
 This component skips the API call for HTML by rendering our own embed-compatible HTML as a React component, and calling the Instagram embed script's embed processor directly in an effect after the render completes.
 
-The result: Easy embedding of public posts! 🎉
+The result: Fast and easy embedding of public posts! 🎉
 
 ### Features include:
 
 - **📷 Simple and easy Instagram post embedding.**
   - Just provide a URL, that's it!
 - **🔓 No access token needed!**
-  - Uses Instagram's [embed script](https://developers.facebook.com/docs/instagram/oembed/), which doesn't require an API token.
+  - Uses Instagram's [Embed JS script](https://developers.facebook.com/docs/instagram/oembed/) directly. No API call or access token needed.
 - **⚡️ Fast**
-  - Embeds in under a second in most conditions.
+  - Embeds usually complete in less than 1 second (often far less).
 - **💪 Resilient**
   - If embedding fails, it automatically retries using an exponential backoff.
-- **💁 Customizable**
-  - Supports all `div` props and provides additional options.
+- **⚙️ Customizable**
+  - Supports all `div` props and provides additional options, such as a background image and spinner.
 
 ## Installation
 
