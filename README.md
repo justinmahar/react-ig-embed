@@ -102,7 +102,7 @@ The contents of this component are modified from a `blockquote` to an `iframe` o
 
 Note that Instagram restricts the dimensions of the embedded `iframe` to a min width of `326px` and a max width of `540px`.
 
-By default, the style `{ overflow: 'hidden' }` is applied.
+By default, the styles `{ overflow: 'hidden', width: '100%', maxWidth: '540px' }` are applied to the container div. It will take up 100% of its parent's width up to 540px, and clipping is applied to prevent the `iframe` from spilling out during the embed process. You can provide your own desired `width` between `326px` and `540px` if you'd like.
 
 ### Link Text
 

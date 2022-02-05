@@ -106,7 +106,7 @@ export const IGEmbed = ({
   return (
     <div
       className={classNames('instagram-media-container', divProps.className)}
-      style={{ overflow: 'hidden', ...divProps.style }}
+      style={{ overflow: 'hidden', width: '100%', maxWidth: '540px', ...divProps.style }}
       key={`${uuidRef}-${retryTime}`}
     >
       {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
