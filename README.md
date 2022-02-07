@@ -10,6 +10,8 @@
   </a>
 </p>
 
+👁️ **[Live Demo](https://justinmahar.github.io/react-ig-embed-demo/)**
+
 ## Overview
 
 Easily embed public Instagram posts with the `IGEmbed` component. No access token is required.
