@@ -51,7 +51,6 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
-    "react-helmet": "^6.1.0",
     "styled-components": "^5.3.3"
   }
 }

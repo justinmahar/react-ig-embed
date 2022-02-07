@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IGEmbed = void 0;
 const classnames_1 = __importDefault(require("classnames"));
 const React = __importStar(require("react"));
-const react_helmet_1 = require("react-helmet");
 const styled_components_1 = __importDefault(require("styled-components"));
 const defaultIgVersion = '14';
 const defaultLinkText = 'View this post on Instagram';
@@ -87,10 +86,17 @@ const IGEmbed = ({ url, backgroundUrl, igVersion = defaultIgVersion, linkText = 
         }
         return () => clearTimeout(timeout);
     }, [initialized, retryBackoffMaxDelay, retryDelay, retryDisabled, retryTime]);
+    React.useEffect(() => {
+        if (typeof document !== 'undefined' && !scriptLoadDisabled && !embedScriptLoaded) {
+            const igScript = document.createElement('script');
+            igScript.setAttribute('src', '//www.instagram.com/embed.js');
+            document.head.appendChild(igScript);
+            embedScriptLoaded = true;
+        }
+    }, [scriptLoadDisabled]);
     const urlWithNoQuery = url.replace(/[?].*$/, '');
     const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
     return (React.createElement("div", { className: (0, classnames_1.default)('instagram-media-container', divProps.className), style: { overflow: 'hidden', width: '100%', maxWidth: '540px', ...divProps.style }, key: `${uuidRef}-${retryTime}` },
-        !scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (React.createElement(react_helmet_1.Helmet, null, React.createElement("script", { src: "//www.instagram.com/embed.js" }))),
         React.createElement("blockquote", { className: "instagram-media", "data-instgrm-permalink": `${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`, "data-instgrm-version": igVersion, ...divProps, style: {
                 background: '#FFF',
                 borderRadius: '3px',

@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Helmet } from 'react-helmet';
 import { DivProps, DivPropsWithoutRef } from 'react-html-props';
 import styled from 'styled-components';
 
@@ -103,6 +102,15 @@ export const IGEmbed = ({
     return () => clearTimeout(timeout);
   }, [initialized, retryBackoffMaxDelay, retryDelay, retryDisabled, retryTime]);
 
+  React.useEffect(() => {
+    if (typeof document !== 'undefined' && !scriptLoadDisabled && !embedScriptLoaded) {
+      const igScript = document.createElement('script');
+      igScript.setAttribute('src', '//www.instagram.com/embed.js');
+      document.head.appendChild(igScript);
+      embedScriptLoaded = true;
+    }
+  }, [scriptLoadDisabled]);
+
   const urlWithNoQuery = url.replace(/[?].*$/, '');
   const cleanUrlWithEndingSlash = `${urlWithNoQuery}${urlWithNoQuery.endsWith('/') ? '' : '/'}`;
 
@@ -112,9 +120,6 @@ export const IGEmbed = ({
       style={{ overflow: 'hidden', width: '100%', maxWidth: '540px', ...divProps.style }}
       key={`${uuidRef}-${retryTime}`}
     >
-      {!scriptLoadDisabled && !embedScriptLoaded && (embedScriptLoaded = true) && (
-        <Helmet>{<script src="//www.instagram.com/embed.js"></script>}</Helmet>
-      )}
       <blockquote
         className="instagram-media"
         data-instgrm-permalink={`${cleanUrlWithEndingSlash}?utm_source=ig_embed&utm_campaign=loading`}
