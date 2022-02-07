@@ -59,7 +59,7 @@ export const IGEmbed = ({
     const win = typeof window !== 'undefined' ? (window as any) : undefined;
     if (win && processTime >= 0) {
       // This call will use the IG embed script to process all elements with the `instagram-media` class name.
-      if (win.instgrm?.Embeds) {
+      if (typeof win.instgrm !== 'undefined' && win.instgrm.Embeds) {
         // console.log('Processing...', Date.now());
         win.instgrm.Embeds.process();
       } else {
