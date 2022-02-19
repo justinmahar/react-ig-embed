@@ -1,3 +1,5 @@
+#  **DEPRECATION NOTICE: This package has been deprecated. Use [react-social-media-embed](https://www.npmjs.com/package/react-social-media-embed) instead.**
+
 <h2 align="center">
   <a href="https://github.com/justinmahar/react-ig-embed">React IG Embed</a>
 </h2>
